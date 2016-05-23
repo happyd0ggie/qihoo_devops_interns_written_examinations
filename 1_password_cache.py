@@ -12,9 +12,10 @@ def usage():
 def login():
 	# get password
 	password = os.environ['password']
+	cmd = 'ssh %s' % sys.argv[1]
 
 	# login server
-	ssh = spawn('ssh %s' % sys.argv[1])
+	ssh = spawn(cmd)
 	ssh.expect('.*password:')
 	ssh.sendline(password)
 	ssh.sendline('\n')
