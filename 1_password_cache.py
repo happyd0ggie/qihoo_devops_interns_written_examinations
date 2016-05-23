@@ -6,6 +6,16 @@ import os
 
 # determine arguments number
 def usage():
+	'''
+	1. set variable password for current shell
+	] export password='your_password'
+
+	2. run this script
+	] chmod u+x ssh.py
+	] ./ssh.py username@example.com
+
+	3. done
+	'''
 	print('./ssh.py user@example.com')
 	sys.exit(1)
 
