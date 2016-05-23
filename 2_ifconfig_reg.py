@@ -36,6 +36,7 @@ def main():
 	get_ifconfig_output()
 	get_device_name()
 	get_device_ip()
+	os.system('rm -f ifconfig.out 1>/dev/null 2>&1')
 	print(ip_info)
 
 if __name__ == '__main__':
