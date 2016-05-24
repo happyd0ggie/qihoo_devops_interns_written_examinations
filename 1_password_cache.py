@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
-from pexpect import spawn
+import pexpect
 import sys
 import os
 
-# determine arguments number
 def usage():
 	'''
 	1. set variable password for current shell
@@ -16,8 +16,13 @@ def usage():
 
 	3. done
 	'''
-	print('./ssh.py user@example.com')
-	sys.exit(1)
+	print('''
+	Usage:
+	  ./ssh.py user@example.com
+
+	Note:
+	  We use default sshd port 22.
+	''')
 
 def login():
 	# get password
@@ -25,15 +30,29 @@ def login():
 	cmd = 'ssh %s' % sys.argv[1]
 
 	# login server
-	ssh = spawn(cmd)
-	ssh.expect('.*password:')
+	ssh = pexpect.spawn(cmd)
+	patterns = [
+		'.*password:',
+		'.*continue connecting (yes/no)?',
+		pexpect.TIMEOUT
+	]
+	while True:
+		index = ssh.expect(patterns)
+		if index == 0:
+			break
+		elif index == 1:
+			ssh.sendline('yes')
+			ssh.expect('.*password:')
+			break
+		else:
+			pass
 	ssh.sendline(password)
-	ssh.sendline('\n')
 	ssh.interact()
 
 def main():
 	if len(sys.argv) < 2:
 		usage()
+		sys.exit(1)
 	login()
 
 if __name__ == '__main__':
